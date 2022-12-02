@@ -37,6 +37,15 @@ def cmd_vale(message):
     bot.reply_to(message, "La fecha de su cumple es: \n" +
                             "24/06")
 
+@bot.message_handler(commands=["nos"])
+def cmd_vale(message):
+    fechaComienzo = datetime(2022,5,14)
+    now = datetime.now()
+    tiempoJ = (now.year - fechaComienzo.year) * 12 + now.month - fechaComienzo.month 
+    bot.reply_to(message, "Fecha de comienzo: \n" +
+                            "14/05/2022. \n" + 
+                            "Llevamos: " + str(tiempoJ) + " meses.")
+                            
 @bot.message_handler(commands=["exa"])
 def cmd_exa(message):
     datenow = datetime.now()
@@ -67,6 +76,7 @@ if __name__ == '__main__':
     bot.set_my_commands([
         telebot.types.BotCommand("/start", "da la bienvenida"),
         telebot.types.BotCommand("/vale", "su fecha de cumpleaños"),
+        telebot.types.BotCommand("/nos", "fecha de comienzo"),
         telebot.types.BotCommand("/exa", "fecha para cambiar passw")
     ])
     print('Iniciando el bot')
