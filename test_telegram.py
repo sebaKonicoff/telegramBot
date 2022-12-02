@@ -3,8 +3,9 @@ from flask import Flask, request #para crear el servidor web
 from pyngrok import ngrok, conf #para crear un tunel entre nuestro servidor web local e internet (obtener una url publica)
 import telebot #para menejar la API de telegram
 import threading #para ejecutar hilos
-from datetime import date
+from datetime import datetime
 import time
+import calendar
 from waitress import serve #para ejecutar el servidor en un entorno de producción
 
 #instanciamos el bot de telegram
@@ -38,8 +39,11 @@ def cmd_vale(message):
 
 @bot.message_handler(commands=["exa"])
 def cmd_exa(message):
+    datenow = datetime.now()
+    diasFaltantes = 30 - datenow.day
     bot.reply_to(message, "Fecha de caducidad: \n" +
-                            "Día 30 del mes.")
+                            "Día 30 del mes. \n" +
+                            "Faltan " + str(diasFaltantes) + " dias para cambiar passw.")
 
 
 #responde a los mensajes de texto que no son comandos
@@ -51,6 +55,12 @@ def bot_mensaje_testo(message):
     else:
         bot.send_message(message.chat.id, "ERROR. Por favor ingrese un comando '/'")
 
+def enviarMensaje():
+    msj = "Aviso!!, tienes que cambiar la contraseña del exa, vence en 25 días."
+    fechaActual = datetime.now()
+    if fechaActual.day == 25:
+        bot.send_message(MI_CHAT_ID, msj)
+
 #MAIN ########################
 if __name__ == '__main__':
     #configuramos los comandos disponibles del bot
@@ -60,6 +70,8 @@ if __name__ == '__main__':
         telebot.types.BotCommand("/exa", "fecha para cambiar passw")
     ])
     print('Iniciando el bot')
+    hilo_bot = threading.Thread(name="hilo_bot", target=enviarMensaje)
+    hilo_bot.start()
     conf.get_default().config_path = "./config_ngrok.yml" #ruta donde queremos que se guarde el archivod e config de ngrok 
     conf.get_default().region = "sa" #definir region de servidor de ngrok (sa = south america)
     ngrok.set_auth_token(NGROK_TOKEN) #creamos el erchivo de credenciales de la API de ngrok
