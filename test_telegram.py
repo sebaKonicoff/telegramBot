@@ -65,7 +65,7 @@ def bot_mensaje_testo(message):
         bot.send_message(message.chat.id, "ERROR. Por favor ingrese un comando '/'")
 
 def enviarMensaje():
-    msj = "Aviso!!, tienes que cambiar la contraseña del exa, vence en 25 días."
+    msj = "Aviso!!, tienes que cambiar la contraseña del exa, vence en 5 días."
     fechaActual = datetime.now()
     if fechaActual.day == 25:
         bot.send_message(MI_CHAT_ID, msj)
