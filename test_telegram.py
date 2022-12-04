@@ -32,7 +32,7 @@ def cmd_start(message):
                             'nos: Fecha desde que comenzamos.\n' +
                             'exa: fecha para cambiar passw')
 
-@bot.message_handler(commands=["vale"])
+@bot.message_handler(commands=["lapio"])
 def cmd_vale(message):
     bot.reply_to(message, "La fecha de su cumple es: \n" +
                             "24/06")
@@ -65,17 +65,20 @@ def bot_mensaje_testo(message):
         bot.send_message(message.chat.id, "ERROR. Por favor ingrese un comando '/'")
 
 def enviarMensaje():
-    msj = "Aviso!!, tienes que cambiar la contraseña del exa, vence en 5 días."
     fechaActual = datetime.now()
     if fechaActual.day == 25:
-        bot.send_message(MI_CHAT_ID, msj)
+        bot.send_message(MI_CHAT_ID, "Aviso!!, tienes que cambiar la contraseña del exa, vence en 5 días.")
+    if fechaActual.day == 23 and fechaActual.month == 6:
+        bot.send_message(MI_CHAT_ID, "Mañana es el cumple de Lapio")
+    if fechaActual.day == 7 and fechaActual.month == 2:
+        bot.send_message(MI_CHAT_ID, "Mañana es el cumple de Moni")
 
 #MAIN ########################
 if __name__ == '__main__':
     #configuramos los comandos disponibles del bot
     bot.set_my_commands([
         telebot.types.BotCommand("/start", "da la bienvenida"),
-        telebot.types.BotCommand("/vale", "su fecha de cumpleaños"),
+        telebot.types.BotCommand("/lapio", "su fecha de cumpleaños"),
         telebot.types.BotCommand("/nos", "fecha de comienzo"),
         telebot.types.BotCommand("/exa", "fecha para cambiar passw")
     ])
